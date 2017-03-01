@@ -1,0 +1,362 @@
+[
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "60 31261",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Super Sporting Goods",
+    "title": "20% Off 2 Regular-Priced Items and/or 10% Off 2 Sale-Priced Items",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "4315 UNIVERSITY WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2017-08-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "PETS",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Pets R Us",
+    "title": "30% Off 2 Regular-Priced Items",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-01-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "4724878",
+    "description": "Year end sale Event.",
+    "merchant": "Brookstone",
+    "title": "20%-70% OFF sale & clearance",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-04-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "2672363",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "J.Crew",
+    "title": "25% OFF purchase",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-06-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "4597663",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Williams-Sonoma",
+    "title": "Up to 75% OFF clearance",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-05-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "PETS",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Coach",
+    "title": "Up to 50% OFF select Winter sale items",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-03-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "4728277",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Aldo",
+    "title": "Extra 50% OFF reduced Knits",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-01-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "ULTA",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Ulta Beauty",
+    "title": "$3.50 OFF $10 purchase",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-04-15T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "BEBE",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Bebe",
+    "title": "Additional 30% OFF already reduced prices",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-02-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "PETS",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "OshKosh B'gosh Outlet",
+    "title": "20% OFF $40 or more purchase",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-08-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "CART",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Carters",
+    "title": "Additional 50% OFF clearance",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-12-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "4731060",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Rue21",
+    "title": "Buy 1, Get 1 50% OFF rueAmerica Apparel, Accessories & more",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-10-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "Tilly",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Tilly's",
+    "title": "Extra 30-50% OFF purchase",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2017-04-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "RID",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Torrid",
+    "title": "Earn $25 Haute Cash Coupon for every $50 purchase",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2018-04-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "50014943",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "P.S. from Aeropostale",
+    "title": "P.S. INSIDER Rewards Discount: $25 OFF $100 or more purchase",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2019-04-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "Vitamin",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Vitamin World",
+    "title": "30% Off 2 Regular-Priced Items",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-08-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "1079",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Hobby Lobby",
+    "title": "40% OFF 1 item at regular price",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-09-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "PETS",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Pets R Us",
+    "title": "30% Off 2 Regular-Priced Items",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-11-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "4726184",
+    "description": "Offer limited to in-store purchase only.",
+    "merchant": "Banana Republic Factory Store",
+    "title": "Free Shipping on all orders over $100",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-05-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  },
+  {
+    "category": "Coupons & Special Offers",
+    "couponcode": "CREW",
+    "description": "Offer not valid in the 769 Madison Avenue, Brookfield Place, Liquor Store, Ludlow Shops.",
+    "merchant": "J.Crew Crewcuts",
+    "title": "25% OFF purchase",
+    "store": {
+      "lat": 47.66001,
+      "long": -122.31313,
+      "city": "Seattle",
+      "phone": "547-2445",
+      "state": "Wa",
+      "street": "123 Main WAY N.E.",
+      "zip": "98105"
+    },
+    "expire_at": "2016-03-05T08:40:51.620Z",
+    "published_at": "2016-03-05T08:40:51.620Z"
+  }
+]
