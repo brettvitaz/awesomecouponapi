@@ -1,7 +1,7 @@
 from flask import Flask, request
-from waitress import serve
-
 import simplejson as json
+from sqlalchemy.exc import SQLAlchemyError
+from waitress import serve
 
 from api import config
 from api.importer import import_data
@@ -49,10 +49,23 @@ def route_coupons():
         coupons_query = coupons_query.filter(query_filter)
     try:
         coupons = coupons_query.all()
-    except Exception as e:
+    except SQLAlchemyError as e:
         return json.dumps({'error': f'{e}'}), 500
 
     return coupons_schema.jsonify(coupons)
+
+
+@app.route('/coupons/<int:coupon_id>')
+def route_coupons_by_id(coupon_id):
+    coupons_schema = CouponsSchema()
+
+    try:
+        coupon = Coupons.query.get_or_404(coupon_id)
+    except SQLAlchemyError as e:
+        return json.dumps({'error': f'{e}'}), 500
+
+    return coupons_schema.jsonify(coupon)
+
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port='5000')
