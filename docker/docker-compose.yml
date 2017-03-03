@@ -1,6 +1,8 @@
 version: '2'
 services:
   coupon-api:
+    depends_on:
+      - coupon-db
     image: coupon-api:1.0
     links:
       - coupon-db
