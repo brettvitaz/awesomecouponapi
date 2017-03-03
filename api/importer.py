@@ -1,14 +1,8 @@
 import simplejson as json
 
-from api.schemas import ma, CouponsSchema
+from api.schemas import CouponsSchema
 
-
-class CouponsImportSchema(CouponsSchema):
-    expire_at = ma.String()
-    published_at = ma.String()
-
-
-coupons_schema = CouponsImportSchema(many=True)
+coupons_schema = CouponsSchema(many=True)
 
 
 def import_data(db):
