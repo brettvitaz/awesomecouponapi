@@ -1,6 +1,8 @@
 from flask import Flask, request
 from waitress import serve
 
+import simplejson as json
+
 from api import config
 from api.importer import import_data
 from api.models import db, Coupons, Stores
@@ -24,20 +26,33 @@ def create_app(config_module=None):
 
 app = create_app(config)
 
-STATUS = {
+STATUS_FILTER = {
     'invalid': Coupons.expire_at < Coupons.published_at,
     'valid': Coupons.expire_at >= Coupons.published_at,
 }
 
 
 @app.route('/coupons')
-def route_root():
+def route_coupons():
+    """
+    Returns a list of coupons.
+
+    :arg status: Filter coupons by status.
+                 Expects one of ('valid', 'invalid') 
+    :return: 
+    """
     coupons_schema = CouponsSchema(many=True)
-    query_filter = STATUS.get(request.args.get('status'))
+
+    query_filter = STATUS_FILTER.get(request.args.get('status'))
     coupons_query = Coupons.query
     if query_filter is not None:
         coupons_query = coupons_query.filter(query_filter)
-    return coupons_schema.jsonify(coupons_query.all())
+    try:
+        coupons = coupons_query.all()
+    except Exception as e:
+        return json.dumps({'error': f'{e}'}), 500
 
+    return coupons_schema.jsonify(coupons)
 
-serve(app, host='0.0.0.0', port='5000')
+if __name__ == '__main__':
+    serve(app, host='0.0.0.0', port='5000')
