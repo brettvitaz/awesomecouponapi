@@ -1,5 +1,4 @@
-from flask import Flask, request
-import simplejson as json
+from flask import Flask, request, jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from waitress import serve
 
@@ -37,8 +36,8 @@ def route_coupons():
     """
     Returns a list of coupons.
 
-    :arg status: Filter coupons by status.
-                 Expects one of ('valid', 'invalid') 
+    :query status: Filter coupons by status.
+                   Expects one of ('valid', 'invalid') 
     :return: 
     """
     coupons_schema = CouponsSchema(many=True)
@@ -49,22 +48,40 @@ def route_coupons():
         coupons_query = coupons_query.filter(query_filter)
     try:
         coupons = coupons_query.all()
-    except SQLAlchemyError as e:
-        return json.dumps({'error': f'{e}'}), 500
+        return coupons_schema.jsonify(coupons)
 
-    return coupons_schema.jsonify(coupons)
+    except SQLAlchemyError as e:
+        return jsonify(error=f'{e}'), 500
 
 
 @app.route('/coupons/<int:coupon_id>')
 def route_coupons_by_id(coupon_id):
-    coupons_schema = CouponsSchema()
+    coupon_schema = CouponsSchema()
 
     try:
         coupon = Coupons.query.get_or_404(coupon_id)
-    except SQLAlchemyError as e:
-        return json.dumps({'error': f'{e}'}), 500
+        return coupon_schema.jsonify(coupon)
 
-    return coupons_schema.jsonify(coupon)
+    except SQLAlchemyError as e:
+        return jsonify(error=f'{e}'), 500
+
+
+@app.route('/coupons', methods=['POST'])
+def route_add_coupon():
+    coupon_schema = CouponsSchema()
+
+    coupon, errors = coupon_schema.load(request.json)
+    if errors:
+        return jsonify(error=errors), 400
+
+    try:
+        db.session.add(coupon)
+        db.session.commit()
+        return jsonify(id=coupon.id)
+
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        return jsonify(error=f'{e}')
 
 
 if __name__ == '__main__':
