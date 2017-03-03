@@ -6,7 +6,7 @@ ma = Marshmallow()
 
 
 class CouponsSchema(ma.ModelSchema):
-    store = ma.Nested('StoresSchema')
+    store = ma.Nested('StoresSchema', exclude=('id',))
 
     class Meta:
         model = Coupons
