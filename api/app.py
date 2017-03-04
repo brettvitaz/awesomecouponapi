@@ -54,16 +54,43 @@ def route_coupons():
         return jsonify(error=f'{e}'), 500
 
 
-@app.route('/coupons/<int:coupon_id>')
+@app.route('/coupons/<int:coupon_id>', methods=['GET', 'PUT', 'DELETE'])
 def route_coupons_by_id(coupon_id):
     coupon_schema = CouponsSchema()
 
     try:
         coupon = Coupons.query.get_or_404(coupon_id)
-        return coupon_schema.jsonify(coupon)
 
     except SQLAlchemyError as e:
         return jsonify(error=f'{e}'), 500
+
+    if request.method == 'GET':
+        return coupon_schema.jsonify(coupon)
+
+    if request.method == 'PUT':
+        coupon_update, errors = coupon_schema.load(request.json, instance=coupon)
+
+        if errors:
+            return jsonify(error=errors), 400
+
+        try:
+            db.session.add(coupon_update)
+            db.session.commit()
+            return coupon_schema.jsonify(coupon_update)
+
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return jsonify(error=f'{e}'), 500
+
+    if request.method == 'DELETE':
+        try:
+            db.session.delete(coupon)
+            db.session.commit()
+            return '', 204
+
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return jsonify(error=f'{e}'), 500
 
 
 @app.route('/coupons', methods=['POST'])
