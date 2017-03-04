@@ -4,7 +4,7 @@ from waitress import serve
 
 from api import config
 from api.importer import import_data
-from api.models import db, Coupons, Stores
+from api.models import db, Coupons
 from api.schemas import ma, CouponsSchema
 
 
