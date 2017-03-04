@@ -15,13 +15,15 @@ def create_app(config_module=None):
 
     db.init_app(flask_app)
     ma.init_app(flask_app)
+
+    return flask_app
+
+
+def do_import(flask_app):
     with flask_app.app_context():
         db.drop_all()
         db.create_all()
-        if not Coupons.query.all():
-            import_data(db)
-
-    return flask_app
+        import_data(db)
 
 
 app = create_app(config)
@@ -116,7 +118,7 @@ def route_add_coupon():
     """
     if not request.is_json:
         raise exceptions.UnsupportedMediaType(f"Expected Content-Type: 'application/json'; "
-                                              f"got: '{request.headers.environ['CONTENT_TYPE']}'")
+                                              f"got: '{request.headers.environ.get('CONTENT_TYPE')}'")
 
     coupon, errors = coupon_schema.load(request.json)
     if errors:
@@ -124,15 +126,21 @@ def route_add_coupon():
 
     db.session.add(coupon)
     db.session.commit()
-    return jsonify(id=coupon.id)
+    return jsonify(id=coupon.id), 201, {'Location': f'/coupons/{coupon.id}'}
 
 
 @app.errorhandler(400)
 @app.errorhandler(404)
 @app.errorhandler(415)
-@app.errorhandler(500)
 def error_bad_request(e):
     return jsonify(error=e.description), e.code
+
+
+@app.errorhandler(500)
+def error_internal_server_error(e):
+    if isinstance(e, exceptions.HTTPException):
+        return jsonify(error=e.description), e.code
+    return jsonify(error=str(e)), 500
 
 
 @app.errorhandler(SQLAlchemyError)
@@ -142,4 +150,10 @@ def error_sql_alchemy_error(e):
 
 
 if __name__ == '__main__':
+    import sys
+
+    if 'init' in sys.argv:
+        do_import(app)
+        exit(0)
+
     serve(app, host='0.0.0.0', port='5000')
