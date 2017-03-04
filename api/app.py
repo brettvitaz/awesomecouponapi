@@ -89,7 +89,7 @@ def route_coupons_by_id(coupon_id):
         return coupon_schema.jsonify(coupon)
 
     if request.method == 'PUT':
-        # Merge the selected coupon data with the request data
+        # Use the coupon schema to validate json data and merge with the retrieved coupon
         coupon_update, errors = coupon_schema.load(request.json, instance=coupon)
 
         if errors:
@@ -120,6 +120,7 @@ def route_add_coupon():
         raise exceptions.UnsupportedMediaType(f"Expected Content-Type: 'application/json'; "
                                               f"got: '{request.headers.environ.get('CONTENT_TYPE')}'")
 
+    # Use coupon schema to validate json data and create the coupon item
     coupon, errors = coupon_schema.load(request.json)
     if errors:
         raise exceptions.BadRequest(errors)
