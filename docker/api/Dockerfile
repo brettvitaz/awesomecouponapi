@@ -14,4 +14,7 @@ EXPOSE 5000/tcp
 
 ENV PYTHONPATH=/usr/src/app/
 
-CMD [ "./wait-for-it.sh", "coupon-db:5432", "-w", "5", "-t", "10", "-s", "--", "python", "./api/app.py" ]
+RUN adduser --disabled-password --gecos 'coupon-api' coupon-api
+USER coupon-api
+
+ENTRYPOINT [ "./wait-for-it.sh", "coupon-db:5432", "-w", "5", "-t", "10", "-s", "--", "python", "./api/app.py" ]
