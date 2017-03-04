@@ -1,1 +1,1 @@
-SQLALCHEMY_DATABASE_URI = 'postgres://postgres:postgres@localhost:5432/'
+SQLALCHEMY_DATABASE_URI = 'postgres://postgres:postgres@coupon-db:5432/'
