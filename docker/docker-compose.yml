@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   coupon-api:
     depends_on:
@@ -10,3 +10,6 @@ services:
       - 5000:5000/tcp
   coupon-db:
     image: postgres:9.6
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
