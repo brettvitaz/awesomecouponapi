@@ -1,0 +1,9 @@
+version: '2.1'
+services:
+  coupon-api-init:
+    depends_on:
+      - coupon-db
+    image: coupon-api:1.0
+    links:
+      - coupon-db
+    command: init
