@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from waitress import serve
+from werkzeug import exceptions
 
 from api import config
 from api.importer import import_data
@@ -25,90 +26,119 @@ def create_app(config_module=None):
 
 app = create_app(config)
 
-STATUS_FILTER = {
-    'invalid': Coupons.expire_at < Coupons.published_at,
-    'valid': Coupons.expire_at >= Coupons.published_at,
+FILTERS = {
+    'status': {
+        'invalid': Coupons.expire_at < Coupons.published_at,
+        'valid': Coupons.expire_at >= Coupons.published_at,
+    }
 }
+
+coupons_schema = CouponsSchema(many=True)
+coupon_schema = CouponsSchema()
 
 
 @app.route('/coupons')
 def route_coupons():
-    """
-    Returns a list of coupons.
+    """Returns a list of coupons.
 
     :query status: Filter coupons by status.
                    Expects one of ('valid', 'invalid') 
-    :return: 
+    :rtype: flask.Response
     """
-    coupons_schema = CouponsSchema(many=True)
-
-    query_filter = STATUS_FILTER.get(request.args.get('status'))
     coupons_query = Coupons.query
-    if query_filter is not None:
-        coupons_query = coupons_query.filter(query_filter)
-    try:
-        coupons = coupons_query.all()
-        return coupons_schema.jsonify(coupons)
 
-    except SQLAlchemyError as e:
-        return jsonify(error=f'{e}'), 500
+    # Apply filters to query and warn user of invalid arguments
+    invalid_args = []
+    for arg, value in request.args.items():
+        if FILTERS.get(arg, {}).get(value) is not None:
+            coupons_query = coupons_query.filter(FILTERS[arg].get(value))
+        else:
+            invalid_args.append(f'{arg}={value}')
+
+    if invalid_args:
+        raise exceptions.BadRequest(f'Invalid arguments: {invalid_args}')
+
+    coupons = coupons_query.all()
+    return coupons_schema.jsonify(coupons)
 
 
-@app.route('/coupons/<int:coupon_id>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/coupons/<coupon_id>', methods=['GET', 'PUT', 'DELETE'])
 def route_coupons_by_id(coupon_id):
-    coupon_schema = CouponsSchema()
-
+    """Retrieves a coupon by id first and then perform HTTP method specific action.
+    
+    :param coupon_id: Id of coupon. Must be a positive integer. 
+    :type coupon_id: int
+    
+    :return: 
+    :rtype: flask.Response
+    """
+    # Validate coupon id is a positive integer
     try:
-        coupon = Coupons.query.get_or_404(coupon_id)
+        if int(coupon_id) < 1:
+            raise ValueError()
+    except ValueError:
+        raise exceptions.BadRequest(f"Coupon ID must be an positive integer; got '{coupon_id}'")
 
-    except SQLAlchemyError as e:
-        return jsonify(error=f'{e}'), 500
+    # Retrieve the coupon from the database (or return 404)
+    coupon = Coupons.query.get_or_404(coupon_id)
 
     if request.method == 'GET':
+        # Return the selected coupon
         return coupon_schema.jsonify(coupon)
 
     if request.method == 'PUT':
+        # Merge the selected coupon data with the request data
         coupon_update, errors = coupon_schema.load(request.json, instance=coupon)
 
         if errors:
-            return jsonify(error=errors), 400
+            raise exceptions.BadRequest(errors)
 
-        try:
-            db.session.add(coupon_update)
-            db.session.commit()
-            return coupon_schema.jsonify(coupon_update)
-
-        except SQLAlchemyError as e:
-            db.session.rollback()
-            return jsonify(error=f'{e}'), 500
+        # Update the selected coupon and return it
+        db.session.add(coupon_update)
+        db.session.commit()
+        return coupon_schema.jsonify(coupon_update)
 
     if request.method == 'DELETE':
-        try:
-            db.session.delete(coupon)
-            db.session.commit()
-            return '', 204
-
-        except SQLAlchemyError as e:
-            db.session.rollback()
-            return jsonify(error=f'{e}'), 500
+        # Delete the selected coupon and return no response
+        db.session.delete(coupon)
+        db.session.commit()
+        return '', 204
 
 
 @app.route('/coupons', methods=['POST'])
 def route_add_coupon():
-    coupon_schema = CouponsSchema()
+    """
+    Add a coupon.
+    
+    Request Content-Type must be :mimetype:`application/json` or operation will fail.
+    
+    :rtype: flask.Response
+    """
+    if not request.is_json:
+        raise exceptions.UnsupportedMediaType(f"Expected Content-Type: 'application/json'; "
+                                              f"got: '{request.headers.environ['CONTENT_TYPE']}'")
 
     coupon, errors = coupon_schema.load(request.json)
     if errors:
-        return jsonify(error=errors), 400
+        raise exceptions.BadRequest(errors)
 
-    try:
-        db.session.add(coupon)
-        db.session.commit()
-        return jsonify(id=coupon.id)
+    db.session.add(coupon)
+    db.session.commit()
+    return jsonify(id=coupon.id)
 
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify(error=f'{e}')
+
+@app.errorhandler(400)
+@app.errorhandler(404)
+@app.errorhandler(415)
+@app.errorhandler(500)
+def error_bad_request(e):
+    return jsonify(error=e.description), e.code
+
+
+@app.errorhandler(SQLAlchemyError)
+def error_sql_alchemy_error(e):
+    db.session.rollback()
+    return jsonify(error=repr(e)), 500
 
 
 if __name__ == '__main__':
