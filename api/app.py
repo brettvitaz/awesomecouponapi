@@ -47,6 +47,8 @@ def route_coupons():
 
     :query status: Filter coupons by status.
                    Expects one of ('valid', 'invalid') 
+
+    :raises: werkzeug.exceptions.BadRequest, sqlalchemy.SQLAlchemyError                  
     :rtype: flask.Response
     """
     coupons_query = Coupons.query
@@ -66,7 +68,11 @@ def route_coupons():
     return coupons_schema.jsonify(coupons)
 
 
-def check_content_type():
+def assert_content_type():
+    """Assert that the Content-Type is :mimetype:`application/json`.
+
+    :raises: werkzeug.exceptions.UnsupportedMediaType
+    """
     if not request.is_json:
         raise exceptions.UnsupportedMediaType(f"Expected Content-Type: 'application/json'; "
                                               f"got: '{request.headers.environ.get('CONTENT_TYPE')}'")
@@ -79,7 +85,7 @@ def route_coupons_by_id(coupon_id):
     :param coupon_id: Id of coupon. Must be a positive integer. 
     :type coupon_id: int
     
-    :return: 
+    :raises: werkzeug.exceptions.BadRequest, sqlalchemy.SQLAlchemyError
     :rtype: flask.Response
     """
     # Validate coupon id is a positive integer
@@ -97,7 +103,7 @@ def route_coupons_by_id(coupon_id):
         return coupon_schema.jsonify(coupon)
 
     if request.method == 'PUT':
-        check_content_type()
+        assert_content_type()
 
         # Use the coupon schema to validate json data and merge with the retrieved coupon
         coupon_update, errors = coupon_schema.load(request.json, instance=coupon)
@@ -119,14 +125,14 @@ def route_coupons_by_id(coupon_id):
 
 @app.route('/coupons', methods=['POST'])
 def route_add_coupon():
-    """
-    Add a coupon.
+    """Add a coupon.
     
     Request Content-Type must be :mimetype:`application/json` or operation will fail.
     
+    :raises: werkzeug.exceptions.BadRequest, sqlalchemy.SQLAlchemyError
     :rtype: flask.Response
     """
-    check_content_type()
+    assert_content_type()
 
     # Use coupon schema to validate json data and create the coupon item
     coupon, errors = coupon_schema.load(request.json)
