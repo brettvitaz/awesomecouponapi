@@ -1,28 +1,47 @@
 from datetime import datetime
 from flask_marshmallow import Marshmallow
-from marshmallow import ValidationError
 
 from api.models import Coupons, Stores
 
 ma = Marshmallow()
 
 
-def deserialize_datetime(obj):
-    try:
-        return datetime.strptime(obj, '%Y-%m-%dT%H:%M:%S.%fZ')
-    except ValueError as e:
-        raise ValidationError(str(e))
+class CouponDateTime(ma.Field):
+    """A formatted Coupon DateTime.
+    
+    Ensures proper (de)serialization of Coupon DateTime values.
+    
+    e.g. ``'2016-08-05T08:40:51.620Z'``
+    """
 
+    default_error_messages = {
+        'invalid': 'Not a valid datetime.',
+        'format': '"{input}" does not match format {format}.',
+    }
 
-def serialize_datetime(obj, key):
-    return f"{getattr(obj, key).isoformat(timespec='milliseconds')}Z"
+    format = '%Y-%m-%dT%H:%M:%S.%fZ'
+
+    def _deserialize(self, value, attr, obj):
+        if value is None:
+            return None
+        try:
+            return datetime.strptime(value, self.format)
+        except ValueError:
+            self.fail('format', input=value, format=self.format)
+
+    def _serialize(self, value, attr, data):
+        if not value:  # Falsy values, e.g. '', None, [] are not valid
+            raise self.fail('invalid')
+
+        try:
+            return f"{value.isoformat(timespec='milliseconds')}Z"
+        except AttributeError:
+            self.fail('invalid')
 
 
 class CouponsSchema(ma.ModelSchema):
-    expire_at = ma.Function(deserialize=lambda obj: deserialize_datetime(obj),
-                            serialize=lambda obj: serialize_datetime(obj, 'expire_at'))
-    published_at = ma.Function(deserialize=lambda obj: deserialize_datetime(obj),
-                               serialize=lambda obj: serialize_datetime(obj, 'published_at'))
+    expire_at = CouponDateTime()
+    published_at = CouponDateTime()
     store = ma.Nested('StoresSchema', exclude=('id',))
 
     class Meta:
