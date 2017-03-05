@@ -27,12 +27,16 @@ def coupons():
         return json.load(f)
 
 
-def test_route_coupons(client):
+def test_route_coupons(client, coupons):
     rv = client().get('/coupons')
     assert rv.status_code == 200
 
-    coupons = json.loads(rv.data)
-    assert len(coupons) == 20
+    all_coupons = json.loads(rv.data)
+    assert len(all_coupons) == 20
+
+    for i, coupon in enumerate(all_coupons):
+        coupons[i].update(id=i + 1)
+        assert json.dumps(coupon, sort_keys=True) == json.dumps(coupons[i], sort_keys=True)
 
 
 def test_route_coupons_invalid(client):
