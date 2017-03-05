@@ -20,8 +20,8 @@ class Coupons(db.Model):
 
 class Stores(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    lat = db.Column(db.Numeric(7, 4))
-    long = db.Column(db.Numeric(7, 4))
+    lat = db.Column(db.Numeric(9, 6))
+    long = db.Column(db.Numeric(9, 6))
     city = db.Column(db.String)
     phone = db.Column(db.String)
     state = db.Column(db.String)
