@@ -13,16 +13,18 @@ def create_app(config_module=None):
     flask_app = Flask(__name__)
     flask_app.config.from_object(config_module)
 
-    db.init_app(flask_app)
-    ma.init_app(flask_app)
-
     return flask_app
 
 
-def do_import(flask_app):
-    with flask_app.app_context():
-        db.drop_all()
-        db.create_all()
+def init_app(flask_app):
+    db.init_app(flask_app)
+    ma.init_app(flask_app)
+
+
+def init_db(do_import=True):
+    db.drop_all()
+    db.create_all()
+    if do_import:
         import_data(db)
 
 
@@ -64,6 +66,12 @@ def route_coupons():
     return coupons_schema.jsonify(coupons)
 
 
+def check_content_type():
+    if not request.is_json:
+        raise exceptions.UnsupportedMediaType(f"Expected Content-Type: 'application/json'; "
+                                              f"got: '{request.headers.environ.get('CONTENT_TYPE')}'")
+
+
 @app.route('/coupons/<coupon_id>', methods=['GET', 'PUT', 'DELETE'])
 def route_coupons_by_id(coupon_id):
     """Retrieves a coupon by id first and then perform HTTP method specific action.
@@ -89,6 +97,8 @@ def route_coupons_by_id(coupon_id):
         return coupon_schema.jsonify(coupon)
 
     if request.method == 'PUT':
+        check_content_type()
+
         # Use the coupon schema to validate json data and merge with the retrieved coupon
         coupon_update, errors = coupon_schema.load(request.json, instance=coupon)
 
@@ -116,9 +126,7 @@ def route_add_coupon():
     
     :rtype: flask.Response
     """
-    if not request.is_json:
-        raise exceptions.UnsupportedMediaType(f"Expected Content-Type: 'application/json'; "
-                                              f"got: '{request.headers.environ.get('CONTENT_TYPE')}'")
+    check_content_type()
 
     # Use coupon schema to validate json data and create the coupon item
     coupon, errors = coupon_schema.load(request.json)
@@ -153,8 +161,11 @@ def error_sql_alchemy_error(e):
 if __name__ == '__main__':
     import sys
 
+    init_app(app)
+
     if 'init' in sys.argv:
-        do_import(app)
+        with app.app_context():
+            init_db()
         exit(0)
 
     serve(app, host='0.0.0.0', port='5000')
