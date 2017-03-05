@@ -1,8 +1,17 @@
+from datetime import datetime
 from flask_marshmallow import Marshmallow
+from marshmallow import ValidationError
 
 from api.models import Coupons, Stores
 
 ma = Marshmallow()
+
+
+def deserialize_datetime(obj):
+    try:
+        return datetime.strptime(obj, '%Y-%m-%dT%H:%M:%S.%fZ')
+    except ValueError as e:
+        raise ValidationError(str(e))
 
 
 def serialize_datetime(obj, key):
@@ -10,9 +19,9 @@ def serialize_datetime(obj, key):
 
 
 class CouponsSchema(ma.ModelSchema):
-    expire_at = ma.Function(deserialize=lambda obj: obj,
+    expire_at = ma.Function(deserialize=lambda obj: deserialize_datetime(obj),
                             serialize=lambda obj: serialize_datetime(obj, 'expire_at'))
-    published_at = ma.Function(deserialize=lambda obj: obj,
+    published_at = ma.Function(deserialize=lambda obj: deserialize_datetime(obj),
                                serialize=lambda obj: serialize_datetime(obj, 'published_at'))
     store = ma.Nested('StoresSchema', exclude=('id',))
 
