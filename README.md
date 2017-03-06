@@ -86,3 +86,7 @@ For added security, a service like [Vault](https://www.vaultproject.io/) can be 
 
 ### Scale and Fault Tolerance
 A container orchestration platform such as [Rancher](http://rancher.com/) can be used to manage and monitor the services. The API services may reside behind a load balancer and automatically scaled to meet demand.  
+
+### Analytics
+Access information can be collected by another service and used to determine the success of a campaign.
+Error logs can be used to identify bad requests and bugs.
