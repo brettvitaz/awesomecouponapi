@@ -73,7 +73,7 @@ Postgres user and password can be configured at deployment time by adding them a
 $ ./docker/deploy.sh [postgres_user] [postgres_password]
 ```
 
-The file `api/config.py` must be updated to reflect the new auth info:
+A less privileged user can be used for added security. The file `api/config.py` must be updated to reflect the new auth info:
 
 ```python
 SQLALCHEMY_DATABASE_URI = 'postgres://[postgres_user]:[postgres_password]@coupon-db:5432/'
