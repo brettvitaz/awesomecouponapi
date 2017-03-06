@@ -148,30 +148,37 @@ def route_add_coupon():
 @app.errorhandler(404)
 @app.errorhandler(415)
 def error_bad_request(e):
-    return jsonify(error=e.description), e.code
+    return log_and_jsonify(e.description, e.code)
 
 
 @app.errorhandler(500)
 def error_internal_server_error(e):
     if isinstance(e, exceptions.HTTPException):
-        return jsonify(error=e.description), e.code
-    return jsonify(error=str(e)), 500
+        return log_and_jsonify(e.description, e.code)
+    return log_and_jsonify(str(e), 500)
 
 
 @app.errorhandler(SQLAlchemyError)
 def error_sql_alchemy_error(e):
     db.session.rollback()
-    return jsonify(error=repr(e)), 500
+    return log_and_jsonify(repr(e), 500)
+
+
+def log_and_jsonify(message, code):
+    app.logger.warn(message, extra={'method': request.method, 'url': request.path})
+    return jsonify(error=message), code
 
 
 if __name__ == '__main__':
-    import sys
-
     init_app(app)
 
+    import sys
     if 'init' in sys.argv:
         with app.app_context():
             init_db()
         exit(0)
+
+    from api.logs import file_handler
+    app.logger.addHandler(file_handler)
 
     serve(app, host='0.0.0.0', port='5000')
