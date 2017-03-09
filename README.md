@@ -57,6 +57,7 @@ I chose to write the service in Python because of the powerful and highly config
 
 #### Assumptions
 * A valid coupon is one where `expire_at` date is greater than or equal to `published_at`.
+* This API will be consumed by an application that will parse JSON into a native object, so key order is not important.
 
 #### Security
 The API service is run by an unprivileged user. Only the API port is externally exposed.
