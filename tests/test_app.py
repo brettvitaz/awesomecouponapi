@@ -55,6 +55,11 @@ def test_route_coupons_valid(client):
     assert len(coupons) == 17
 
 
+def test_route_coupons_bad_filter(client):
+    rv = client().get('/coupons?foo=valid')
+    assert rv.status_code == 400
+
+
 def test_route_coupons_empty(client):
     rv = client(do_import=False).get('/coupons')
     assert rv.status_code == 200
